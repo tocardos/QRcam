@@ -5,25 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Front Camera Preview</title>
     <style>
-        body {
+        /* Reset some default browser styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            flex-direction: column; /* Align items in a column */
             background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
         }
+
+        /* Styling for the title */
+        h1 {
+            margin: 10px;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Responsive video styling */
         video {
             width: 100%;
-            max-width: 600px;
+            max-width: 100%;
+            max-height: 100%;
             border: 2px solid #ccc;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            background: #000;
+        }
+
+        /* Ensure the container resizes properly on different screens */
+        .video-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Provide a nice message if the camera cannot be accessed */
+        .error-message {
+            text-align: center;
+            color: #d9534f;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
-    <video id="video" autoplay playsinline></video>
+    <h1>Don't Scan Me!</h1>
+    <div class="video-container">
+        <video id="video" autoplay playsinline></video>
+        <div id="error" class="error-message" style="display:none;">Error accessing the camera. Please make sure permissions are granted and try again.</div>
+    </div>
 
     <script>
         // Check if the browser supports getUserMedia
@@ -43,10 +78,11 @@
                 })
                 .catch((error) => {
                     console.error('Error accessing the camera:', error);
-                    alert('Could not access the camera. Please make sure you have granted the necessary permissions.');
+                    document.getElementById('error').style.display = 'block';
                 });
         } else {
-            alert('Your browser does not support accessing the camera.');
+            document.getElementById('error').innerText = 'Your browser does not support accessing the camera.';
+            document.getElementById('error').style.display = 'block';
         }
     </script>
 </body>
